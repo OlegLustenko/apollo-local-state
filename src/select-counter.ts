@@ -21,12 +21,13 @@ export const selectCounter = (readQuery: any) => {
   return counterState.counter;
 };
 
-export const selectNextCounterValue = async (query:any) => {
+export const selectNextCounterValue = async (query: any) => {
   const {
     data: { counter, counterUpdater }
   } = await query({
     query: GET_COUNTER
   });
+  const nextValue = counter + counterUpdater;
 
-  return counter + counterUpdater;
+  return nextValue;
 };
