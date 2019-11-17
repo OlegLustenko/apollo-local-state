@@ -8,6 +8,18 @@ export const UPDATE_COUNTER = gql`
   }
 `;
 
-export const setCounter = (mutate, state?) => (value: any) => {
+export const UPDATE_COUNTER_UPDATER = gql`
+  mutation UpdateCounterUpdater($updater: Number!) {
+    updateCounterUpdater(value: $updater) @client {
+      counterUpdater
+    }
+  }
+`;
+
+export const updateCounterUpdater = (mutate: any, initialState?: any) => (value: any) => {
+  mutate({ variables: { updater: value } });
+};
+
+export const setCounter = (mutate: any, state?: any) => (value: any) => {
   mutate({ variables: { counter: value } });
 };
