@@ -2,17 +2,13 @@ import { gql } from "apollo-boost";
 
 export const UPDATE_COUNTER = gql`
   mutation UpdateCounter($value: Number!) {
-    updateCounter(value: $counter) @client {
-      counter
-    }
+    updateCounter(value: $counter) @client 
   }
 `;
 
 export const UPDATE_COUNTER_UPDATER = gql`
   mutation UpdateCounterUpdater($updater: Number!) {
-    updateCounterUpdater(value: $updater) @client {
-      counterUpdater
-    }
+    updateCounterUpdater(value: $updater) @client
   }
 `;
 

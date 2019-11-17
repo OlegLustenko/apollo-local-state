@@ -26,7 +26,6 @@ import { useState } from "react";
 
 const addToCounter = (value: number) => ({
   data: {
-    query: GET_COUNTER,
     counter: value
   }
 });
@@ -34,7 +33,6 @@ const addToCounter = (value: number) => ({
 const addToCounterUpdater = (value: number) => {
   return {
     data: {
-      query: GET_COUNTER,
       counterUpdater: value
     }
   };
@@ -42,7 +40,6 @@ const addToCounterUpdater = (value: number) => {
 
 const setNextCounterValueCreator = (value: number) => ({
   data: {
-    query: GET_COUNTER,
     nextCounterValue: value
   }
 });
@@ -52,7 +49,6 @@ const updateCounter = (writeData: any, query?: any) => ({
 }: {
   value: any;
 }) => {
-  console.dir(addToCounter(value));
   writeData(addToCounter(value));
 };
 
@@ -66,11 +62,14 @@ const setCounterUpdater = (writeData: any, query?: any) => ({
 
 const setNextCounterValue = (writeData: any, query: any) => async () => {
   const nextCounterValue = await selectNextCounterValue(query);
-  console.log(setNextCounterValueCreator(nextCounterValue));
   writeData(setNextCounterValueCreator(nextCounterValue));
 };
 
-const createMutation = (action: any) => (_result: any, variables: any, { client }: {client: any}) => {
+const createMutation = (action: any) => (
+  _result: any,
+  variables: any,
+  { client }: { client: any }
+) => {
   const query = client.readQuery;
   const writeData = client.writeData.bind(client);
 
@@ -80,28 +79,34 @@ const createMutation = (action: any) => (_result: any, variables: any, { client 
 const updateCounterAction = createMutation(updateCounter);
 const updateCounterUpdaterAction = createMutation(setCounterUpdater);
 
+const cache = new InMemoryCache();
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  clientState: {
-    resolvers: {
-      Query: {
-        counter() {
-          return 0;
-        },
-        counterUpdater() {
-          return 0;
-        },
-        nextCounterValue: async (www, _values, { client }) => {
-          return selectNextCounterValue(client.query);
-        }
+  cache,
+  resolvers: {
+    Query: {
+      counter() {
+        return 0;
       },
-      Mutation: {
-        updateCounter: updateCounterAction,
-        updateCounterUpdater: updateCounterUpdaterAction
+      counterUpdater() {
+        return 0;
+      },
+      nextCounterValue: async (www, _values, { client }) => {
+        return selectNextCounterValue(client.query);
       }
+    },
+    Mutation: {
+      updateCounter: updateCounterAction,
+      updateCounterUpdater: updateCounterUpdaterAction
     }
   }
 });
+
+cache.writeData({
+  data: {
+    counter: 0,
+    counterUpdater: 0,
+  }
+})
 
 const createAction = (apolloClient: typeof client) => (action: any) => {
   const writeData = apolloClient.writeQuery.bind(client);
@@ -125,6 +130,8 @@ function useAppActions() {
   };
 }
 
+
+
 function useApp() {
   const { data, loading } = useQuery(GET_COUNTER_VIEW_MODEL);
   const { addToCounter, setCounter, setUpdater } = useAppActions();
@@ -132,11 +139,13 @@ function useApp() {
 
   React.useEffect(() => {
     client.watchQuery({ query: GET_COUNTER }).subscribe(value => {
-      // setNextCounterValueAction(value);
+      setNextCounterValue(
+        client.writeData.bind(client),
+        client.query.bind(client)
+      )();
     });
   }, [client]);
 
-  console.log(data);
   return {
     counter: loading ? 0 : data.counter,
     counterUpdater: loading ? 0 : data.counterUpdater,
