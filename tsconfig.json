@@ -1,6 +1,7 @@
 {
   "include": [
-    "./src/*", "src/state/apollo/apollo-client.ts"
+    "./src/*",
+    "src/state/apollo-client.ts"
   ],
   "compilerOptions": {
     "lib": [

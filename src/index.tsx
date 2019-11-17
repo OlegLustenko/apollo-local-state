@@ -1,16 +1,18 @@
 import * as React from "react";
 import { render } from "react-dom";
 
-import { client } from "./state/apollo/apollo-client";
+import { LocalState } from "./LocalState";
+import { createClient } from "./state/apollo-client";
 import { ApolloProvider } from "@apollo/react-hooks";
-import { App } from "./app";
 
 import "./styles.css";
 
 const rootElement = document.getElementById("root");
+const client = createClient();
+
 render(
   <ApolloProvider client={client}>
-    <App />
+    <LocalState />
   </ApolloProvider>,
   rootElement
 );
