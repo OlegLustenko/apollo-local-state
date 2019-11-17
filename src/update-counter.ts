@@ -8,6 +8,6 @@ export const UPDATE_COUNTER = gql`
   }
 `;
 
-export const setCounter = (mutate, state?) => (value: any) => {
+export const setCounter = (mutate: any, state?: any) => (value: any) => {
   mutate({ variables: { counter: value } });
 };

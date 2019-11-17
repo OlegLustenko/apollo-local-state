@@ -9,20 +9,26 @@ import { selectCounter, GET_COUNTER } from "./select-counter";
 import "./styles.css";
 import { useState } from "react";
 
-const addToCounter = value => ({
+const addToCounter = (value: any) => ({
   query: GET_COUNTER,
   data: {
     counter: value
   }
 });
 
-const updateCounter = (readQuery, writeQuery) => ({ value }) => {
+const updateCounter = (
+  readQuery: any,
+  writeQuery: (arg0: { query: any; data: { counter: any } }) => void
+) => ({ value }: {value: any}) => {
   // const counter = selectCounter(readQuery);
 
   writeQuery(addToCounter(value));
 };
 
-const createAction = action => (_result, variables, { cache }) => {
+const createAction = (action: {
+  (readQuery: any, writeQuery: any): ({ value }: { value: any }) => void;
+  (arg0: any, arg1: any): (arg0: any) => void;
+}) => (_result: any, variables: any, { cache }: any) => {
   const readQuery = cache.readQuery.bind(cache);
   const writeQuery = cache.writeQuery.bind(cache);
 
@@ -33,14 +39,16 @@ const updateCounterAction = createAction(updateCounter);
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  resolvers: {
-    Query: {
-      counter: () => {
-        return 0;
+  clientState: {
+    resolvers: {
+      Query: {},
+      Mutation: {
+        updateCounter: updateCounterAction
       }
     },
-    Mutation: {
-      updateCounter: updateCounterAction
+    defaults: {
+      counter: 0,
+      counterModifier: 0
     }
   }
 });

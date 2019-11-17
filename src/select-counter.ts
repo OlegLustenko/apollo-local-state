@@ -6,7 +6,7 @@ export const GET_COUNTER = gql`
   }
 `;
 
-export const selectCounter = readQuery => {
+export const selectCounter = (readQuery: any) => {
   const counterState = readQuery({ query: GET_COUNTER });
 
   return counterState.counter;
