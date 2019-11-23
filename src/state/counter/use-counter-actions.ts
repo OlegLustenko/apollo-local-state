@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { useCallback } from "react";
+
 import { GET_LOCAL_STATE } from "../../LocalState";
 import { UPDATE_LOCAL_STATE_COUNTER } from "./actions";
 

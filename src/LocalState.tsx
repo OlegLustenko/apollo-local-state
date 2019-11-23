@@ -1,6 +1,7 @@
 import { gql } from "apollo-boost";
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
+
 import { LocalStateComponent } from "./components/LocalState";
 import { selectCounterValue } from "./state/counter/selectors";
 import { useCounterActions } from "./state/counter/use-counter-actions";
@@ -39,11 +40,16 @@ export const LocalState = () => {
     custom(1);
   };
 
+  const decrement = () => {
+    custom(-1);
+  };
+
   return (
     <LocalStateComponent
       increment={increment}
-      decrement={incrementOddHandler}
+      decrement={decrement}
       counter={counterValue}
+      incrementOddHandler={incrementOddHandler}
     />
   );
 };

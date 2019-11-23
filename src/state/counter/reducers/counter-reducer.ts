@@ -1,10 +1,11 @@
 import produce from "immer";
-import { CounterActionTypes } from "../actions";
+
+import { CounterActionTypes, CUSTOM_INCREMENT } from "../actions";
 
 export const counterReducer = produce(
   (state: any, action: CounterActionTypes) => {
     switch (action.type) {
-      case "CUSTOM": {
+      case CUSTOM_INCREMENT: {
         state.localState.counter.value += action.payload;
         return;
       }

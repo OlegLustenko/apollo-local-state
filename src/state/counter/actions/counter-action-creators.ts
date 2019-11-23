@@ -1,6 +1,6 @@
 import { gql } from "apollo-boost";
 
-export const CUSTOM = "CUSTOM";
+export const CUSTOM_INCREMENT = "CUSTOM_INCREMENT";
 
 const actionCreatorToApolloMutation = (actionCreator: any) => (
   ...args: any
@@ -16,11 +16,11 @@ export const UPDATE_LOCAL_STATE_COUNTER = gql`
 
 type CustomIncrementActionCreator = (
   payload: number
-) => { type: typeof CUSTOM; payload: number };
+) => { type: typeof CUSTOM_INCREMENT; payload: number };
 
 const baseCustomIncrementActionCreator: CustomIncrementActionCreator = (
   payload: any
-) => ({ type: CUSTOM, payload });
+) => ({ type: CUSTOM_INCREMENT, payload });
 
 export const customIncrementActionCreator = actionCreatorToApolloMutation(
   baseCustomIncrementActionCreator
