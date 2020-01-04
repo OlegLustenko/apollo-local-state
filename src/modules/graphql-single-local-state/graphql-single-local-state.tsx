@@ -1,15 +1,15 @@
-import { gql } from "apollo-boost";
-import React from "react";
-import { useQuery } from "@apollo/react-hooks";
+import React from 'react';
 
-import { LocalStateComponent } from "./components/LocalState";
-import { selectCounterValue } from "./state/counter/selectors";
-import { useCounterActions } from "./state/counter/use-counter-actions";
+import { gql, useQuery } from '@apollo/client';
+
+import { LocalStateComponent } from '../../components/LocalState';
+import { selectCounterValue } from './state/counter/selectors';
+import { useCounterActions } from './state/counter/use-counter-actions';
 
 export const GET_LOCAL_STATE = gql`
   query LocalState {
-    localState {
-      counter @client {
+    localState @client {
+      counter {
         value
         nextValue
         prevValue
@@ -19,17 +19,17 @@ export const GET_LOCAL_STATE = gql`
 `;
 
 function useLocalState() {
-  const { data: state } = useQuery(GET_LOCAL_STATE);
+  const { data: state, loading } = useQuery(GET_LOCAL_STATE);
   const { custom, incrementOdd } = useCounterActions();
 
   return {
     custom,
     incrementOdd,
-    counterValue: selectCounterValue(state)
+    counterValue: !loading && selectCounterValue(state)
   };
 }
 
-export const LocalState = () => {
+export const GraphqlSingleLocalState = () => {
   const { custom, counterValue, incrementOdd } = useLocalState();
 
   const incrementOddHandler = () => {
