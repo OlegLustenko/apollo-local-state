@@ -1,4 +1,4 @@
-type GUID = string;
+type GUID = number;
 
 export interface TodoItem {
   id: GUID;
@@ -7,7 +7,7 @@ export interface TodoItem {
 }
 
 export class TodoItem {
-  constructor(params: Partial<TodoItem>) {
+  constructor(params?: Partial<TodoItem>) {
     Object.assign(
       this,
       {

@@ -1,5 +1,15 @@
 import { gql } from '@apollo/client';
 
+export type GetTodoName = {
+  todos: {
+    todoName: string;
+  };
+};
+
+export type GetTodoNameVariables = {
+  id: number;
+};
+
 export const todoQueryRegistry = {
   getTodoName: gql`
     query GetTodoName($id: String!) {
@@ -29,6 +39,15 @@ export const todoQueryRegistry = {
           id
           name
           done
+        }
+      }
+    }
+  `,
+  getTodoItemsIds: gql`
+    query GetTodos {
+      todos @client {
+        items {
+          id
         }
       }
     }

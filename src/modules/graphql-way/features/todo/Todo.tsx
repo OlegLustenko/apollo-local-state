@@ -1,27 +1,20 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import React from 'react';
 
 import { TodoListItem } from './components/TodoListItem';
 import { TodoList } from '../../components/Todo/components/TodoList';
 import { TodoAddTodoButton } from './components/TodoAddTodoButton/TodoAddTodoButton';
-import { TodoItem } from '../../../../core/entities/Todo';
 import { TodoCompletedTodo } from './components/TodoComletedTodo';
+import { todoQueryRegistry } from './state/todo/todo-querries-registry';
+import { TodoModelState } from './state/todo/resolvers/todo-resolvers';
 
 function useTodo() {
-  const { data, loading } = useQuery(
-    gql`
-      query GetTodos {
-        todos @client(always: true) {
-          items {
-            id
-          }
-        }
-      }
-    `,
+  const { data, loading } = useQuery<Partial<TodoModelState>>(
+    todoQueryRegistry.getTodoItemsIds,
   );
 
   return {
-    todos: data?.todos?.items ?? [],
+    todos: data?.todos?.items ?? [], // TODO: Initial state
     loading,
   };
 }
@@ -38,7 +31,7 @@ export const Todo = () => {
       }}
     >
       <TodoList>
-        {todos.map((todo: TodoItem, index: number) => (
+        {todos.map((todo, index: number) => (
           <TodoListItem todo={todo} key={index} />
         ))}
       </TodoList>

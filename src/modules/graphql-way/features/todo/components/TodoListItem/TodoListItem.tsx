@@ -1,22 +1,29 @@
 import React from 'react';
 
-import { TodoListItemCheckbox } from '../TodoListItemCheckbox';
+import { TodoListItemCheckbox } from './components';
 import { TodoListItemComponent } from '../../../../components/Todo/components/TodoList/components/TodoListItem';
-import { TodoItem } from '../../../../../../core/entities/Todo';
 import { useQuery } from '@apollo/client';
-import { todoQueryRegistry } from '../../state/todo/todo-querries-registry';
+import {
+  GetTodoName,
+  GetTodoNameVariables,
+  todoQueryRegistry,
+} from '../../state/todo/todo-querries-registry';
+import { TodoItemModel } from '../../state/todo/models/TodoItemModel';
 
-function useTodoListItem(id: string) {
-  const { data } = useQuery(todoQueryRegistry.getTodoName, {
-    variables: { id },
-  });
+function useTodoListItem(id: number) {
+  const { data } = useQuery<GetTodoName, GetTodoNameVariables>(
+    todoQueryRegistry.getTodoName,
+    {
+      variables: { id },
+    },
+  );
 
   return {
     todoName: data?.todos?.todoName,
   };
 }
 
-export const TodoListItem = ({ todo }: { todo: TodoItem }) => {
+export const TodoListItem = ({ todo }: { todo: TodoItemModel }) => {
   const { todoName } = useTodoListItem(todo.id);
 
   return (

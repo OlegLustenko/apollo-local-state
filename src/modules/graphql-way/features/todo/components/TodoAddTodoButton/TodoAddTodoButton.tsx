@@ -13,7 +13,7 @@ export const TodoAddTodoButton = () => {
   const { addTodo } = useTodoAddTodoButton();
 
   const addTodoHandler = () => {
-    addTodo('UNZ UNZ UNZ');
+    addTodo('RANDOM TODO');
   };
 
   return <button onClick={addTodoHandler}>ADD RANDOM TODO</button>;
