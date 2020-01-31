@@ -1,18 +1,19 @@
-import * as React from "react";
-import { render } from "react-dom";
+import React from 'react';
+import { render } from 'react-dom';
 
-import { LocalState } from "./LocalState";
-import { createClient } from "./state/apollo-client";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { GraphqlSingleLocalStateRoot } from './modules/graphql-single-local-state/graphql-single-local-state-root';
+import { GraphqlWayRoot } from './modules/graphql-way/graphql-way-root';
+import './styles.css';
 
-import "./styles.css";
-
-const rootElement = document.getElementById("root");
-const client = createClient();
+const rootElement = document.getElementById('root');
 
 render(
-  <ApolloProvider client={client}>
-    <LocalState />
-  </ApolloProvider>,
+  <>
+    <GraphqlSingleLocalStateRoot />
+    <GraphqlSingleLocalStateRoot />
+    <GraphqlSingleLocalStateRoot />
+    <hr />
+    <GraphqlWayRoot />
+  </>,
   rootElement
 );

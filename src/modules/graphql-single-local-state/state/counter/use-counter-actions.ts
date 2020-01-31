@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/client";
 
-import { GET_LOCAL_STATE } from "../../LocalState";
+import { GET_LOCAL_STATE } from "../../graphql-single-local-state";
 import { UPDATE_LOCAL_STATE_COUNTER } from "./actions";
 
 import { addToCounterValue, incrementCounterValueIfOdd } from "./actions";

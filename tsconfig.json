@@ -1,7 +1,7 @@
 {
   "include": [
     "./src/*",
-    "src/state/apollo-client.ts"
+    "src/modules/graphql-single-local-state/state/apollo-client.ts"
   ],
   "compilerOptions": {
     "lib": [
